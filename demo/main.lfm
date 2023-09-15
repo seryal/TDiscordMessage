@@ -6,18 +6,18 @@ object Form1: TForm1
   Caption = 'Form1'
   ClientHeight = 112
   ClientWidth = 1014
-  LCLVersion = '2.0.6.0'
+  LCLVersion = '2.2.6.0'
   object Label1: TLabel
     Left = 8
-    Height = 15
+    Height = 16
     Top = 8
-    Width = 96
+    Width = 108
     Caption = 'Discord Hook URL'
     ParentColor = False
   end
   object Edit1: TEdit
     Left = 8
-    Height = 23
+    Height = 28
     Top = 24
     Width = 992
     TabOrder = 0

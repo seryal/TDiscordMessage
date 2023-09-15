@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
-    <Version Major="0" Minor="1"/>
+  <Package Version="5">
     <PathDelim Value="\"/>
     <Name Value="DiscordMessage"/>
     <Type Value="RunAndDesignTime"/>
@@ -9,22 +8,21 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
+    <Version Minor="1"/>
     <Files Count="1">
       <Item1>
         <Filename Value="discord.pas"/>
         <UnitName Value="discord"/>
       </Item1>
     </Files>
-    <RequiredPkgs Count="2">
+    <CompatibilityMode Value="True"/>
+    <RequiredPkgs Count="1">
       <Item1>
-        <PackageName Value="laz_synapse"/>
-      </Item1>
-      <Item2>
         <PackageName Value="FCL"/>
-      </Item2>
+      </Item1>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

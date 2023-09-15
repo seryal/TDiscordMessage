@@ -5,7 +5,9 @@ unit discord;
 interface
 
 uses
-  Classes, SysUtils, HTTPSend, ssl_openssl, fpjson, jsonparser;
+  Classes, SysUtils,
+  fphttpclient, fpjson, jsonparser,
+  opensslsockets, sslsockets;
 
 const
   DS_CHANNEL = 'channel';
@@ -33,9 +35,6 @@ const
   DS_EMBEDS_FOOTER_TEXT = 'text';
   DS_EMBEDS_FOOTER_ICONURL = 'icon_url';
 
-
-
-
 type
 
   { TDiscordEmbedsFooter }
@@ -53,9 +52,7 @@ type
     function GetObject: TJSONObject;
     property Text: string read FText write SetText;
     property IconUrl: string read FIconUrl write SetIconUrl;
-
   end;
-
 
   { TDiscrodEmbedsThumbNail }
 
@@ -95,7 +92,6 @@ type
     function GetObject: TJSONObject;
   end;
 
-
   { TDiscordEmbedsField }
 
   TDiscordEmbedsField = class
@@ -122,7 +118,6 @@ type
   private
     FObject: TJSONObject;
     FFieldsArray: TJSONArray;
-
     FTitle: string;
     FURL: string;
     FDescription: string;
@@ -149,7 +144,6 @@ type
 
   { TDiscordMessage }
 
-
   TDiscordMessage = class
   private
     FWebhookUrl: string;
@@ -159,7 +153,6 @@ type
     FChannel: string;
     FObject: TJSONObject;
     FEmbedsArray: TJSONArray;
-
     function GetJSONMessage: string;
     procedure SetChannel(AValue: string);
     procedure SetIconURL(AValue: string);
@@ -176,9 +169,7 @@ type
     property Content: string read FContent write SetContent;
     property AvatarURL: string read FIconURL write SetIconURL;
     property Channel: string read FChannel write SetChannel;
-
   end;
-
 
 implementation
 
@@ -190,7 +181,6 @@ begin
     Exit;
   FIconUrl := AValue;
   FObject.Add(DS_EMBEDS_FOOTER_ICONURL, FIconUrl);
-
 end;
 
 procedure TDiscordEmbedsFooter.SetText(AValue: string);
@@ -249,7 +239,6 @@ begin
     Exit;
   FIconUrl := AValue;
   FObject.Add(DS_EMBEDS_AUTHOR_ICONURL, FIconUrl);
-
 end;
 
 procedure TDiscrodEmbedsAuthor.SetName(AValue: string);
@@ -319,26 +308,24 @@ end;
 
 procedure TDiscordEmbeds.AddRec(ARecName: string; AJSONData: TJSONData);
 var
-  dat: TJSONData;
+  JSONData: TJSONData;
 begin
   if (AJSONData.JSONType = jtArray) then
   begin
-    dat := TJSONArray(FObject.Find(ARecName));
-    if Assigned(dat) then
-      dat := TJSONArray(AJSONData)
+    JSONData := TJSONArray(FObject.Find(ARecName));
+    if Assigned(JSONData) then
+      JSONData := TJSONArray(AJSONData)
     else
       FObject.Add(ARecName, TJSONArray(AJSONData));
   end;
   if (AJSONData.JSONType = jtObject) then
   begin
-    dat := TJSONObject(FObject.Find(ARecName));
-    if Assigned(dat) then
-      dat := TJSONObject(AJSONData)
+    JSONData := TJSONObject(FObject.Find(ARecName));
+    if Assigned(JSONData) then
+      JSONData := TJSONObject(AJSONData)
     else
       FObject.Add(ARecName, TJSONObject(AJSONData));
-
   end;
-
 end;
 
 function TDiscordEmbeds.GetObject: TJSONObject;
@@ -363,9 +350,7 @@ begin
     FFieldsArray := TJSONArray.Create;
     AddRec(DS_EMBEDS_FIELDS, FFieldsArray);
   end;
-
   FFieldsArray.Add(ADiscrodEmbedsField.GetObject);
-
 end;
 
 procedure TDiscordEmbeds.SetAuthor(ADiscrodEmbedsAuthor: TDiscrodEmbedsAuthor);
@@ -436,7 +421,6 @@ function TDiscordMessage.GetJSONMessage: string;
 begin
   Result := FObject.AsJSON;
   Result := FObject.FormatJSON;
-
 end;
 
 procedure TDiscordMessage.SetChannel(AValue: string);
@@ -445,7 +429,6 @@ begin
     Exit;
   FChannel := AValue;
   FObject.Add(DS_CHANNEL, AValue);
-
 end;
 
 procedure TDiscordMessage.SetIconURL(AValue: string);
@@ -454,7 +437,6 @@ begin
     Exit;
   FIconURL := AValue;
   FObject.Add(DS_AVATAR_URL, AValue);
-
 end;
 
 procedure TDiscordMessage.SetContent(AValue: string);
@@ -463,7 +445,6 @@ begin
     Exit;
   FContent := AValue;
   FObject.Add(DS_CONTENT, AValue);
-
 end;
 
 procedure TDiscordMessage.SetUserName(AValue: string);
@@ -471,18 +452,16 @@ begin
   if FUserName = AValue then
     Exit;
   FUserName := AValue;
-
   FObject.Add(DS_USERNAME, AValue);
-
 end;
 
 procedure TDiscordMessage.AddRec(ARecName: string; AJSONArray: TJSONArray);
 var
-  dat: TJSONArray;
+  JSONArray: TJSONArray;
 begin
-  dat := TJSONArray(FObject.Find(ARecName));
-  if Assigned(dat) then
-    dat := AJSONArray
+  JSONArray := TJSONArray(FObject.Find(ARecName));
+  if Assigned(JSONArray) then
+    JSONArray := AJSONArray
   else
     FObject.Add(ARecName, AJSONArray);
 end;
@@ -491,55 +470,25 @@ constructor TDiscordMessage.Create(AWebhookURL: string);
 begin
   FWebhookUrl := AWebhookURL;
   FObject := TJSONObject.Create;
-
 end;
 
 destructor TDiscordMessage.Destroy;
 begin
   FreeAndNil(FObject);
-
   inherited Destroy;
 end;
 
 function TDiscordMessage.SendMessage: boolean;
 var
-  bodyJson, Response: string;
-  http: THTTPSend;
-  Params: TStringStream;
-  res: boolean;
-  Data: TStringList;
+  HttpClient: TFPHTTPClient;
 begin
-  //  bodyJson := '"payload": ' + JSONMessage;
-  //  Data := TStringList.Create;
-  //  Data.LoadFromFile('test_discord.json');
-
-  bodyJson := JSONMessage;
-  //  bodyJson := Data.Text;
-  //  FreeAndNil(Data);
-  http := THTTPSend.Create;
-  http.Headers.Clear;
-  http.Protocol := '1.1';
-
-  http.MimeType := 'application/json';
-
-  Params := TStringStream.Create(bodyJson);
-  http.Document.LoadFromStream(Params);
-  FreeAndNil(Params);
-  res := http.HTTPMethod('POST', FWebhookUrl);
-  Response := '';
-  Data := TStringList.Create;
-  try
-    if res then
-    begin
-      Data.LoadFromStream(http.Document);
-      Response := Data.Text;
-    end;
-  finally
-    FreeAndNil(Data);
-    FreeAndNil(http);
-  end;
-
-  Result := res;
+  Result := True;
+  HttpClient := TFPHTTPClient.Create(nil);
+  HttpClient.AddHeader('Content-Type', 'application/json');
+  HttpClient.RequestBody := TRawByteStringStream.Create(JSONMessage);
+  HttpClient.Post(FWebhookUrl);
+  if HttpClient.ResponseStatusCode = 204 then
+    Result := False;
 end;
 
 procedure TDiscordMessage.AddEmbeds(AEmbeds: TDiscordEmbeds);
@@ -549,10 +498,7 @@ begin
     FEmbedsArray := TJSONArray.Create;
     AddRec(DS_EMBEDS, FEmbedsArray);
   end;
-
   FEmbedsArray.Add(AEmbeds.GetObject);
-
 end;
-
 
 end.

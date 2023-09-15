@@ -39,7 +39,7 @@ var
 begin
   Discord := TDiscordMessage.Create(Edit1.Text);
   try
-    Discord.Content := 'TEST Simple Message';
+    Discord.Content := 'TEST Simple Message' ;
     Discord.UserName := 'Web Hook Lazarus Bot';
     Discord.AvatarURL := 'https://a.fsdn.com/allura/p/lazarus/icon?1552026857?&w=90';
     Discord.SendMessage;
@@ -96,7 +96,6 @@ begin
     Embeds.SetFooter(Footer);
     FreeAndNil(Footer);
 
-
     // field 1
     Field := TDiscordEmbedsField.Create;
     Field.Name := 'Version';
@@ -104,6 +103,7 @@ begin
     Field.mInline := False;
     Embeds.AddField(Field);
     FreeAndNil(Field);
+
     // field 2
     Field := TDiscordEmbedsField.Create;
     Field.Name := 'Forum';
@@ -111,17 +111,16 @@ begin
     Field.mInline := True;
     Embeds.AddField(Field);
     FreeAndNil(Field);
+
     // field 2
     Field := TDiscordEmbedsField.Create;
     Field.Name := 'Wiki';
     Field.Value := format('[%s](%s)', ['Link', 'https://wiki.freepascal.org/']);
     Field.mInline := True;
-
     Embeds.AddField(Field);
     FreeAndNil(Field);
     Discord.AddEmbeds(Embeds);
     FreeAndNil(Embeds);
-
 
     // second
     Embeds := TDiscordEmbeds.Create;
@@ -131,7 +130,6 @@ begin
     Embeds.Color := $FF0000;
 
     Discord.AddEmbeds(Embeds);
-
     FreeAndNil(Embeds);
 
     Discord.SendMessage;
