@@ -20,20 +20,20 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="33"/>
-        <CursorPos X="41" Y="45"/>
+        <TopLine Value="39"/>
+        <CursorPos X="42" Y="51"/>
         <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="..\..\..\lazarus\fpcsrc\packages\fcl-web\src\base\fphttpclient.pp"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="701"/>
-        <CursorPos Y="714"/>
+        <CursorPos Y="715"/>
         <UsageCount Value="21"/>
+        <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="discord.pas"/>
@@ -45,7 +45,7 @@
       <Unit4>
         <Filename Value="..\discord.pas"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="475"/>
+        <TopLine Value="481"/>
         <CursorPos X="26" Y="481"/>
         <UsageCount Value="11"/>
         <Loaded Value="True"/>
