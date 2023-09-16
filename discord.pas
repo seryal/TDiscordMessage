@@ -484,11 +484,15 @@ var
 begin
   Result := True;
   HttpClient := TFPHTTPClient.Create(nil);
-  HttpClient.AddHeader('Content-Type', 'application/json');
-  HttpClient.RequestBody := TRawByteStringStream.Create(JSONMessage);
-  HttpClient.Post(FWebhookUrl);
-  if HttpClient.ResponseStatusCode = 204 then
-    Result := False;
+  try
+    HttpClient.AddHeader('Content-Type', 'application/json');
+    HttpClient.RequestBody := TRawByteStringStream.Create(JSONMessage);
+    HttpClient.Post(FWebhookUrl);
+    if HttpClient.ResponseStatusCode <> 204 then
+      Result := False;
+  finally
+    HttpClient.Free;
+  end;
 end;
 
 procedure TDiscordMessage.AddEmbeds(AEmbeds: TDiscordEmbeds);
