@@ -44,12 +44,12 @@ type
     FIconUrl: string;
     FObject: TJSONObject;
     FText: string;
-    procedure SetIconUrl(AValue: string);
-    procedure SetText(AValue: string);
+    procedure SetIconUrl(const AValue: string);
+    procedure SetText(const AValue: string);
   public
     constructor Create;
     destructor Destroy; override;
-    function GetObject: TJSONObject;
+    function GetObject: TJSONObject; inline;
     property Text: string read FText write SetText;
     property IconUrl: string read FIconUrl write SetIconUrl;
   end;
@@ -60,12 +60,12 @@ type
   private
     FObject: TJSONObject;
     FUrl: string;
-    procedure SetUrl(AValue: string);
+    procedure SetUrl(const AValue: string);
   public
     constructor Create;
     destructor Destroy; override;
     property URL: string read FUrl write SetUrl;
-    function GetObject: TJSONObject;
+    function GetObject: TJSONObject; inline;
   end;
 
   { TDiscrodEmbedsImage }
@@ -80,16 +80,16 @@ type
     FObject: TJSONObject;
     FName: string;
     FUrl: string;
-    procedure SetIconUrl(AValue: string);
-    procedure SetName(AValue: string);
-    procedure SetUrl(AValue: string);
+    procedure SetIconUrl(const AValue: string);
+    procedure SetName(const AValue: string);
+    procedure SetUrl(const AValue: string);
   public
     constructor Create;
     destructor Destroy; override;
     property Name: string read FName write SetName;
     property URL: string read FUrl write SetUrl;
     property IconUrl: string read FIconUrl write SetIconUrl;
-    function GetObject: TJSONObject;
+    function GetObject: TJSONObject; inline;
   end;
 
   { TDiscordEmbedsField }
@@ -100,16 +100,16 @@ type
     FName: string;
     FValue: string;
     FInline: boolean;
-    procedure SetInline(AValue: boolean);
-    procedure SetName(AValue: string);
-    procedure SetValue(AValue: string);
+    procedure SetInline(const AValue: boolean);
+    procedure SetName(const AValue: string);
+    procedure SetValue(const AValue: string);
   public
     constructor Create;
     destructor Destroy; override;
     property Name: string read FName write SetName;
     property Value: string read FValue write SetValue;
     property mInline: boolean read FInline write SetInline;
-    function GetObject: TJSONObject;
+    function GetObject: TJSONObject; inline;
   end;
 
   { TDiscordEmbeds }
@@ -123,11 +123,11 @@ type
     FDescription: string;
     FColor: integer;
     procedure SetColor(AValue: integer);
-    procedure SetDescription(AValue: string);
-    procedure SetTitle(AValue: string);
-    procedure SetUrl(AValue: string);
-    procedure AddRec(ARecName: string; AJSONData: TJSONData);
-    function GetObject: TJSONObject;
+    procedure SetDescription(const AValue: string);
+    procedure SetTitle(const AValue: string);
+    procedure SetUrl(const AValue: string);
+    procedure AddRec(const ARecName: string; AJSONData: TJSONData);
+    function GetObject: TJSONObject; inline;
   public
     constructor Create;
     destructor Destroy; override;
@@ -136,10 +136,10 @@ type
     property Description: string read FDescription write SetDescription;
     property Color: integer read FColor write SetColor;
     procedure AddField(ADiscrodEmbedsField: TDiscordEmbedsField);
-    procedure SetAuthor(ADiscrodEmbedsAuthor: TDiscrodEmbedsAuthor);
-    procedure SetThumbNail(ADiscordEmbedsThumbNail: TDiscrodEmbedsThumbNail);
-    procedure SetImage(ADiscordEmbedsImage: TDiscrodEmbedsImage);
-    procedure SetFooter(ADiscordEmbedsFooter: TDiscordEmbedsFooter);
+    procedure SetAuthor(ADiscrodEmbedsAuthor: TDiscrodEmbedsAuthor); inline;
+    procedure SetThumbNail(ADiscordEmbedsThumbNail: TDiscrodEmbedsThumbNail); inline;
+    procedure SetImage(ADiscordEmbedsImage: TDiscrodEmbedsImage); inline;
+    procedure SetFooter(ADiscordEmbedsFooter: TDiscordEmbedsFooter); inline;
   end;
 
   { TDiscordMessage }
@@ -154,13 +154,13 @@ type
     FObject: TJSONObject;
     FEmbedsArray: TJSONArray;
     function GetJSONMessage: string;
-    procedure SetChannel(AValue: string);
-    procedure SetIconURL(AValue: string);
-    procedure SetContent(AValue: string);
-    procedure SetUserName(AValue: string);
-    procedure AddRec(ARecName: string; AJSONArray: TJSONArray);
+    procedure SetChannel(const AValue: string);
+    procedure SetIconURL(const AValue: string);
+    procedure SetContent(const AValue: string);
+    procedure SetUserName(const AValue: string);
+    procedure AddRec(const ARecName: string; AJSONArray: TJSONArray);
   public
-    constructor Create(AWebhookURL: string);
+    constructor Create(const AWebhookURL: string);
     destructor Destroy; override;
     function SendMessage: boolean;
     procedure AddEmbeds(AEmbeds: TDiscordEmbeds);
@@ -175,7 +175,7 @@ implementation
 
 { TDiscordEmbedsFooter }
 
-procedure TDiscordEmbedsFooter.SetIconUrl(AValue: string);
+procedure TDiscordEmbedsFooter.SetIconUrl(const AValue: string);
 begin
   if FIconUrl = AValue then
     Exit;
@@ -183,7 +183,7 @@ begin
   FObject.Add(DS_EMBEDS_FOOTER_ICONURL, FIconUrl);
 end;
 
-procedure TDiscordEmbedsFooter.SetText(AValue: string);
+procedure TDiscordEmbedsFooter.SetText(const AValue: string);
 begin
   if FText = AValue then
     Exit;
@@ -208,7 +208,7 @@ end;
 
 { TDiscrodEmbedsThumbNail }
 
-procedure TDiscrodEmbedsThumbNail.SetUrl(AValue: string);
+procedure TDiscrodEmbedsThumbNail.SetUrl(const AValue: string);
 begin
   if FUrl = AValue then
     Exit;
@@ -233,7 +233,7 @@ end;
 
 { TDiscrodEmbedsAuthor }
 
-procedure TDiscrodEmbedsAuthor.SetIconUrl(AValue: string);
+procedure TDiscrodEmbedsAuthor.SetIconUrl(const AValue: string);
 begin
   if FIconUrl = AValue then
     Exit;
@@ -241,7 +241,7 @@ begin
   FObject.Add(DS_EMBEDS_AUTHOR_ICONURL, FIconUrl);
 end;
 
-procedure TDiscrodEmbedsAuthor.SetName(AValue: string);
+procedure TDiscrodEmbedsAuthor.SetName(const AValue: string);
 begin
   if FName = AValue then
     Exit;
@@ -249,7 +249,7 @@ begin
   FObject.Add(DS_EMBEDS_AUTHOR_NAME, FName);
 end;
 
-procedure TDiscrodEmbedsAuthor.SetUrl(AValue: string);
+procedure TDiscrodEmbedsAuthor.SetUrl(const AValue: string);
 begin
   if FUrl = AValue then
     Exit;
@@ -282,7 +282,7 @@ begin
   FObject.Add(DS_EMBEDS_COLOR, FColor);
 end;
 
-procedure TDiscordEmbeds.SetDescription(AValue: string);
+procedure TDiscordEmbeds.SetDescription(const AValue: string);
 begin
   if FDescription = AValue then
     Exit;
@@ -290,7 +290,7 @@ begin
   FObject.Add(DS_EMBEDS_DESCRIPTION, FDescription);
 end;
 
-procedure TDiscordEmbeds.SetTitle(AValue: string);
+procedure TDiscordEmbeds.SetTitle(const AValue: string);
 begin
   if FTitle = AValue then
     Exit;
@@ -298,7 +298,7 @@ begin
   FObject.Add(DS_EMBEDS_TITLE, FTitle);
 end;
 
-procedure TDiscordEmbeds.SetUrl(AValue: string);
+procedure TDiscordEmbeds.SetUrl(const AValue: string);
 begin
   if FURL = AValue then
     Exit;
@@ -306,7 +306,7 @@ begin
   FObject.Add(DS_EMBEDS_URL, FURL);
 end;
 
-procedure TDiscordEmbeds.AddRec(ARecName: string; AJSONData: TJSONData);
+procedure TDiscordEmbeds.AddRec(const ARecName: string; AJSONData: TJSONData);
 var
   JSONData: TJSONData;
 begin
@@ -375,7 +375,7 @@ end;
 
 { TDiscordEmbedsField }
 
-procedure TDiscordEmbedsField.SetInline(AValue: boolean);
+procedure TDiscordEmbedsField.SetInline(const AValue: boolean);
 begin
   if FInline = AValue then
     Exit;
@@ -384,7 +384,7 @@ begin
 end;
 
 
-procedure TDiscordEmbedsField.SetName(AValue: string);
+procedure TDiscordEmbedsField.SetName(const AValue: string);
 begin
   if FName = AValue then
     Exit;
@@ -392,7 +392,7 @@ begin
   FObject.Add(DS_EMBEDS_FIELDS_NAME, FName);
 end;
 
-procedure TDiscordEmbedsField.SetValue(AValue: string);
+procedure TDiscordEmbedsField.SetValue(const AValue: string);
 begin
   if FValue = AValue then
     Exit;
@@ -423,7 +423,7 @@ begin
   Result := FObject.FormatJSON;
 end;
 
-procedure TDiscordMessage.SetChannel(AValue: string);
+procedure TDiscordMessage.SetChannel(const AValue: string);
 begin
   if FChannel = AValue then
     Exit;
@@ -431,7 +431,7 @@ begin
   FObject.Add(DS_CHANNEL, AValue);
 end;
 
-procedure TDiscordMessage.SetIconURL(AValue: string);
+procedure TDiscordMessage.SetIconURL(const AValue: string);
 begin
   if FIconURL = AValue then
     Exit;
@@ -439,7 +439,7 @@ begin
   FObject.Add(DS_AVATAR_URL, AValue);
 end;
 
-procedure TDiscordMessage.SetContent(AValue: string);
+procedure TDiscordMessage.SetContent(const AValue: string);
 begin
   if FContent = AValue then
     Exit;
@@ -447,7 +447,7 @@ begin
   FObject.Add(DS_CONTENT, AValue);
 end;
 
-procedure TDiscordMessage.SetUserName(AValue: string);
+procedure TDiscordMessage.SetUserName(const AValue: string);
 begin
   if FUserName = AValue then
     Exit;
@@ -455,7 +455,7 @@ begin
   FObject.Add(DS_USERNAME, AValue);
 end;
 
-procedure TDiscordMessage.AddRec(ARecName: string; AJSONArray: TJSONArray);
+procedure TDiscordMessage.AddRec(const ARecName: string; AJSONArray: TJSONArray);
 var
   JSONArray: TJSONArray;
 begin
@@ -466,7 +466,7 @@ begin
     FObject.Add(ARecName, AJSONArray);
 end;
 
-constructor TDiscordMessage.Create(AWebhookURL: string);
+constructor TDiscordMessage.Create(const AWebhookURL: string);
 begin
   FWebhookUrl := AWebhookURL;
   FObject := TJSONObject.Create;
