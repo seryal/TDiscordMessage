@@ -490,6 +490,7 @@ begin
     if HttpClient.ResponseStatusCode <> 204 then
       Result := False;
   finally
+    HttpClient.RequestBody.Free;
     HttpClient.Free;
   end;
 end;
