@@ -310,7 +310,7 @@ procedure TDiscordEmbeds.AddRec(const ARecName: string; AJSONData: TJSONData);
 var
   JSONData: TJSONData;
 begin
-  if (AJSONData.JSONType = jtArray) then
+  if AJSONData.JSONType = jtArray then
   begin
     JSONData := TJSONArray(FObject.Find(ARecName));
     if Assigned(JSONData) then
@@ -318,7 +318,7 @@ begin
     else
       FObject.Add(ARecName, TJSONArray(AJSONData));
   end;
-  if (AJSONData.JSONType = jtObject) then
+  if AJSONData.JSONType = jtObject then
   begin
     JSONData := TJSONObject(FObject.Find(ARecName));
     if Assigned(JSONData) then
@@ -420,7 +420,6 @@ end;
 function TDiscordMessage.GetJSONMessage: string;
 begin
   Result := FObject.AsJSON;
-  Result := FObject.FormatJSON;
 end;
 
 procedure TDiscordMessage.SetChannel(const AValue: string);
